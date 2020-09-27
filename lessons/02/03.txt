@@ -1,0 +1,4 @@
+* Выполняем поочередно *
+
+mysqldump > /home/02/dump.sql
+mysql sample < /home/02/dump.sql
