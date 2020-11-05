@@ -18,7 +18,7 @@ SELECT
 	d.price_early
 FROM
 	`deals` d
-LEFT JOIN `goods` g ON d.`goods_id` = g.`id`
+JOIN `goods` g ON d.`goods_id` = g.`id`
 WHERE
 	d.deal_end > NOW() AND g.category_id = 13
 ORDER BY d.price_current;
