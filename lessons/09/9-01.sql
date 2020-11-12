@@ -22,7 +22,9 @@ COMMIT;
 и соответствующее название каталога name из таблицы catalogs.
 */
 
-
+CREATE VIEW prod_category (product, catalog)
+AS SELECT `name`, (SELECT `name` FROM `catalogs` WHERE `catalogs`.`id` = `products`.`catalog_id`) FROM `products`;
+SELECT * FROM prod_category;
 
 
 /* 
@@ -33,8 +35,26 @@ COMMIT;
 и 0, если она отсутствует.
 */
 
+SET @day := 0;
+SELECT
+	@day := @day + 1 AS day,
+	IF(@day IN(SELECT DAYOFMONTH(`created_at`) FROM `users` WHERE YEAR(`created_at`) = 2018), 1, 0) as is_exist
+HAVING @day <= DAY(LAST_DAY('2018-08-01'));
+
+SELECT YEAR('2018-08-01');
+
+
+-- сначала сгенерируем временную таблицу на DAY(LAST_DAY('2018-08-01')) строк
+SET @i = -1;
+SELECT DATE(ADDDATE('2012-02-10', INTERVAL @i:=@i+1 DAY)) AS date
+HAVING 
+@i < DATEDIFF('2012-02-15', '2012-02-10');
+
+
+SELECT DAYOFMONTH(`created_at`) FROM `users` WHERE YEAR(`created_at`) = 2018;
+
 
 /* 
-3. Пусть имеется любая таблица с календарным полем created_at. 
+4. Пусть имеется любая таблица с календарным полем created_at. 
 Создайте запрос, который удаляет устаревшие записи из таблицы, оставляя только 5 самых свежих записей.
 */
